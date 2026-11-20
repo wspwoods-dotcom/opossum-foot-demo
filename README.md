@@ -119,7 +119,14 @@ the fencing list below, it is a bug, not a design choice.
      full app does; the demo does none of it). The function never
      runs: no download, no share sheet, no link fetch, no file
      dialog (the hidden import inputs are intercepted too), no
-     deletion, no microphone. Erase's storage-level reseed (item 2)
+     deletion, no microphone. The explanation dismisses the moment
+     the visitor moves — a tab-bar tap kills it in the capture
+     phase, before the pane switches (a MutationObserver on the
+     panes/views covers in-app jumps), and tapping the toast itself
+     dismisses it too; dismissal cancels the ~12s re-show chain, so
+     a dismissed explanation never resurrects on the new pane
+     (Tanner's ruling, 2026-11-19: "The message box should
+     disappear once you move"). Erase's storage-level reseed (item 2)
      is therefore unreachable from its button and remains only as a
      safety net. The Data pane subtitle now reads: *"In the full
      app, these move your records in and out. In the demo, tap one
