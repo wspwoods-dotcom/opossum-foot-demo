@@ -96,10 +96,17 @@ V1's copy is kept verbatim except where the clone makes it false:
 - Step 3 "peek at the Seasons and Route previews" — now "Work the
   other tabs … the app's real screens."
 - Lede now states plainly that this is the real app running in the
-  browser. Everything else — including the draggable-pin callout,
-  *"You're not stuck with the pin where it lands. GPS can be off by a
-  few yards — drag the pin to where the set really is."* — is v1's
-  wording untouched.
+  browser. Everything else is v1's wording untouched, except the pin
+  callout and step 1, whose copy Tanner replaced on 2026-11-19.
+  Callout now: *"There's a faster way in. Tap the blue-and-white
+  locate tab and a pin drops instantly at your GPS location — right
+  where you're standing."* Closing line: *"That's the way the app
+  works on your own ground, too. The app is coming soon — coming
+  very soon."* (the coming-soon sentence is Tanner's 2026-11-19
+  addition to the closing line). Step 1 now: "Drop the signature pin" /
+  "Pick the signature Opossum Foot pin to drop a location on the
+  map, then drag it exactly where you want it before you save. Up
+  to three sets of your own in the demo."
 
 ## Verification
 
