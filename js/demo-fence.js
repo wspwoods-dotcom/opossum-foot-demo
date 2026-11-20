@@ -26,6 +26,10 @@
  * 4. FRAME FIT — when the landing page frames this app on a desktop
  *    phone mockup (hash #notch), the county banner gets the same
  *    notch clearance the v1 demo applied.
+ * 5. STAY-BUT-EXPLAIN (fencing pass, 2026-11-19) — the controls that
+ *    would move data off the phone, wipe it, or open the microphone
+ *    stay visible, but a tap explains what the full app does instead
+ *    of running the function (see the interception section below).
  *
  * Everything else — every screen, control, list, picker, and flow — is
  * the app's own code, untouched.
@@ -410,6 +414,69 @@
     }
     if (bannerTries > 80) clearInterval(bannerTimer);
   }, 250);
+
+  /* ================= stay-but-explain interception =================
+   * Fencing pass (2026-11-19): controls whose real function moves data
+   * off the phone (exports, imports, shares, Save Photo), wipes it
+   * (Erase, Purge), or opens the microphone (dictation, Record memo)
+   * stay visible — the demo IS the app — but in the demo a tap
+   * EXPLAINS instead of acting. One capture-phase listener on the
+   * document sees the tap before the app's own handlers (onclick
+   * properties wired at boot) and stops it there: no download, no
+   * share sheet, no fetch of a pasted link, no deletion, no mic — and
+   * the hidden file inputs are never clicked by the import buttons;
+   * they are intercepted themselves too, as a belt-and-braces, so no
+   * file dialog can open. The explanation rides the app's own toast;
+   * it is re-shown on the app's own ~3.2s toast timer so the full
+   * text stays readable for ~12 seconds. Because Erase is intercepted,
+   * the storage layer's silent reseed-on-erase above is no longer
+   * reachable from the Erase button; it remains only as a safety net
+   * behind storage clears the UI cannot trigger. */
+  var EXPLAIN_TEXT = {
+    'btn-backup': "In the full app, this saves one file holding your whole line — sets, catches, and logs — so you can restore it after a reinstall or move it to a new phone. The demo doesn't save or send any files.",
+    'btn-export-media': "In the full app, this bundles every photo and voice memo from every line into one ZIP — the backup for your pictures. The demo doesn't download anything.",
+    'btn-share-line': "In the full app, this sends the line you're on — its sets and logs — to another trapper as a file that lands on their phone as a new line of their own. The demo doesn't share anything out.",
+    'btn-import': "In the full app, this brings in a backup file or a line another trapper shared with you. The demo doesn't take files in.",
+    'import-file': "In the full app, this brings in a backup file or a line another trapper shared with you. The demo doesn't take files in.",
+    'btn-import-pins': "In the full app, this turns pins you saved in Google Maps, My Maps, or Google Takeout into sets on the line you're on. The demo doesn't import pins.",
+    'import-pins-file': "In the full app, this turns pins you saved in Google Maps, My Maps, or Google Takeout into sets on the line you're on. The demo doesn't import pins.",
+    'btn-paste-pin': "In the full app, you paste a Google Maps share link and that one pin lands on your line as a set. The demo doesn't fetch links.",
+    'btn-export-catches': "In the full app, this downloads your catches as a spreadsheet, honoring the filters above. The demo doesn't download files.",
+    'btn-export-sets': "In the full app, this downloads your sets as a spreadsheet file. The demo doesn't download files.",
+    'btn-export-mileage': "In the full app, this downloads this line's trip log as a spreadsheet. The demo doesn't download files.",
+    'btn-share-photos': "In the full app, this bundles the line's set and catch photos into one file to send to another trapper, whose app re-attaches them by set name. The demo doesn't send photos out.",
+    'm-ph-save': "In the full app, this puts the photo in your phone's library or hands it to the share sheet. The demo keeps its sample photos inside the demo.",
+    'm2-ph-save': "In the full app, this puts the photo in your phone's library or hands it to the share sheet. The demo keeps its sample photos inside the demo.",
+    'btn-erase': "In the full app, this wipes every record off the phone for good — no undo, no cloud copy. In the demo there's nothing to lose: the Reset button restores the sample line.",
+    'btn-purge': "In the full app, this permanently deletes the catch history you pick here. The demo keeps its sample history — Reset restores the sample line.",
+    'btn-voice-setnotes': "In the full app, you dictate notes and record voice memos that stay on your phone. The demo doesn't record.",
+    'btn-voice-lognotes': "In the full app, you dictate notes and record voice memos that stay on your phone. The demo doesn't record.",
+    'btn-se-memo': "In the full app, you dictate notes and record voice memos that stay on your phone. The demo doesn't record.",
+    'btn-log-memo': "In the full app, you dictate notes and record voice memos that stay on your phone. The demo doesn't record."
+  };
+  var explainToken = 0;
+  function demoExplain(msg) {
+    if (typeof window.toast !== 'function') return;
+    var token = ++explainToken;
+    window.toast(msg);
+    [3000, 6000, 9000].forEach(function (delay) {
+      setTimeout(function () {
+        if (token === explainToken && typeof window.toast === 'function') window.toast(msg);
+      }, delay);
+    });
+  }
+  document.addEventListener('click', function (e) {
+    var el = e.target;
+    while (el && el !== document) {
+      if (el.id && Object.prototype.hasOwnProperty.call(EXPLAIN_TEXT, el.id)) {
+        e.preventDefault();
+        e.stopPropagation();
+        demoExplain(EXPLAIN_TEXT[el.id]);
+        return;
+      }
+      el = el.parentNode;
+    }
+  }, true);
 
   /* ================= frame fit ================= */
   if (/notch/.test(location.hash || '')) {
