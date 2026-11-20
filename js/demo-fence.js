@@ -428,7 +428,10 @@
    * they are intercepted themselves too, as a belt-and-braces, so no
    * file dialog can open. The explanation rides the app's own toast;
    * it is re-shown on the app's own ~3.2s toast timer so the full
-   * text stays readable for ~12 seconds. Because Erase is intercepted,
+   * text stays readable for ~12 seconds — but it dismisses the
+   * moment the visitor moves (tab-bar tap, any pane/view switch, or
+   * a tap on the toast itself), per Tanner's 2026-11-19 ruling; see
+   * dismissExplain below. Because Erase is intercepted,
    * the storage layer's silent reseed-on-erase above is no longer
    * reachable from the Erase button; it remains only as a safety net
    * behind storage clears the UI cannot trigger. */
@@ -455,9 +458,13 @@
     'btn-log-memo': "In the full app, you dictate notes and record voice memos that stay on your phone. The demo doesn't record."
   };
   var explainToken = 0;
+  var explainLive = false;
+  var explainMsg = '';
   function demoExplain(msg) {
     if (typeof window.toast !== 'function') return;
     var token = ++explainToken;
+    explainLive = true;
+    explainMsg = msg;
     window.toast(msg);
     [3000, 6000, 9000].forEach(function (delay) {
       setTimeout(function () {
@@ -465,6 +472,56 @@
       }, delay);
     });
   }
+  /* Move-dismissal (Tanner, 2026-11-19, from his iPhone): the
+   * explanation LINGERED — it stayed up across a tab switch, covering
+   * the new pane. His ruling: "The message box should disappear once
+   * you move." Dismissal is fence-side only (the app's toast() is the
+   * app's): bump the token so the pending re-shows above can never
+   * resurrect the toast, and remove the toast's .show class — exactly
+   * how the app hides it, so the app's own pending hide timer then
+   * fires harmlessly on an already-hidden toast. The class is removed
+   * only while the toast still carries OUR text: if the app has since
+   * replaced it with a message of its own, that message is not ours
+   * to cut short. */
+  function dismissExplain() {
+    if (!explainLive) return;
+    var msg = explainMsg;
+    explainLive = false;
+    explainMsg = '';
+    explainToken++;
+    var t = document.getElementById('toast');
+    if (t && t.textContent === msg) t.classList.remove('show');
+  }
+  /* A tap on the bottom tab bar is a move: dismiss in the capture
+   * phase, BEFORE the app's own tab handler switches panes, so the
+   * toast is never visible on the new pane. A tap on the toast
+   * itself dismisses it too. */
+  document.addEventListener('click', function (e) {
+    var el = e.target;
+    while (el && el !== document) {
+      if (el.id === 'tabbar' || el.id === 'toast') { dismissExplain(); return; }
+      el = el.parentNode;
+    }
+  }, true);
+  /* Backstop for moves that don't come from the tab bar (in-app jumps
+   * that switch panes directly): watch the panes' and views' class
+   * for the .active change and dismiss the moment it lands — the
+   * observer callback runs before the next paint, so the toast never
+   * shows on the new pane. Set up by poll because this script loads
+   * before the app's markup exists. */
+  var moveWatchTries = 0;
+  var moveWatchTimer = setInterval(function () {
+    moveWatchTries++;
+    var targets = document.querySelectorAll('.pane, .view');
+    if (targets.length && typeof MutationObserver === 'function') {
+      var moveObserver = new MutationObserver(function () { dismissExplain(); });
+      for (var i = 0; i < targets.length; i++) {
+        moveObserver.observe(targets[i], { attributes: true, attributeFilter: ['class'] });
+      }
+      clearInterval(moveWatchTimer);
+    }
+    if (moveWatchTries > 80) clearInterval(moveWatchTimer);
+  }, 250);
   document.addEventListener('click', function (e) {
     var el = e.target;
     while (el && el !== document) {
