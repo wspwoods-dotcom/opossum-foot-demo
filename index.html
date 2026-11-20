@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Opossum Foot — Website Demo</title>
+<meta name="description" content="Try the Opossum Foot trap-line notebook right in your browser. Sample data only — nothing is saved.">
+<link rel="icon" href="assets/favicon.png">
+<link rel="stylesheet" href="css/landing.css">
+</head>
+<body>
+<div class="page">
+
+  <header class="site-head">
+    <img class="site-logo" src="assets/logo-primary.png" alt="Opossum Foot">
+    <div class="site-head-text">
+      <p class="site-tag">A pocket trapping notebook</p>
+      <p class="site-sub">Website demo — sample data only</p>
+    </div>
+  </header>
+
+  <main class="stage">
+
+    <section class="pitch">
+      <h1>Your trap line, in your pocket.</h1>
+      <p class="lede">This is the real Opossum Foot app, running in your browser on a
+        sample line in Prairie County. Every screen, list, and picker works the way
+        it works on a phone — try it the way you'd run a line.</p>
+
+      <ol class="steps">
+        <li>
+          <span class="step-n">1</span>
+          <div>
+            <strong>Drop a pin where the set is</strong>
+            <p>Tap the pin button, tap the map, then drag the pin to the exact spot
+              before you save. Up to three sets of your own in the demo.</p>
+          </div>
+        </li>
+        <li>
+          <span class="step-n">2</span>
+          <div>
+            <strong>Log a catch, check a set</strong>
+            <p>Open any set on the line and use the app's own Log a Catch and
+              Mark Checked — seasons, counts, and all.</p>
+          </div>
+        </li>
+        <li>
+          <span class="step-n">3</span>
+          <div>
+            <strong>Work the other tabs</strong>
+            <p>History, Totals, Seasons, and Route are the app's real screens —
+              seasons for the state, your line on the map.</p>
+          </div>
+        </li>
+      </ol>
+
+      <div class="pin-callout">
+        <p class="pin-line">You're not stuck with the pin where it lands. GPS can be
+          off by a few yards — drag the pin to where the set really is.</p>
+        <p class="pin-note">That's the way the app works on your own ground, too.</p>
+      </div>
+
+      <div class="about-card">
+        <h2>About this demo</h2>
+        <ul>
+          <li><strong>Sample data only.</strong> The sets, catches, and weather are
+            made up — a sample line in Prairie County, out on anonymous ground.</li>
+          <li><strong>Nothing is saved.</strong> No account, no sign-in, nothing
+            written to your device. Leave or hit Reset and the sample line is
+            back the way it started.</li>
+          <li><strong>Your own ground.</strong> Tap the crosshair and the map flies
+            to you — your location stays in your browser; it is never sent
+            anywhere and never stored. You can make and drag sets there, too.</li>
+          <li><strong>Three sets of your own.</strong> The demo lets you add three
+            sets so you can feel the flow. The full app carries your whole line.</li>
+        </ul>
+      </div>
+
+      <p class="pitch-note">The full app runs on iPhone and Android — no account,
+        nothing to sign into, one price once. Free to start: three dozen sets on
+        one line.</p>
+    </section>
+
+    <section class="phone-wrap">
+      <div class="phone" id="phone">
+        <iframe id="demo-frame" title="Opossum Foot app demo"
+          allow="geolocation" src="app.html"></iframe>
+      </div>
+      <div class="frame-bar">
+        <p class="frame-note">Website demo — sample data only. Nothing here is saved to an account.</p>
+        <button type="button" id="btn-reset-page" class="reset-btn">Reset the demo</button>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-foot">
+    <p>Opossum Foot — a pocket trapping notebook. Follow along.</p>
+  </footer>
+
+</div>
+
+<script>
+(function () {
+  var frame = document.getElementById('demo-frame');
+  /* Desktop shows the app in a phone frame with a notch — the app gets
+   * the notch clearance hint. On a real phone the frame IS the phone,
+   * so no hint and no notch padding. */
+  if (window.matchMedia && window.matchMedia('(min-width: 761px)').matches) {
+    frame.src = 'app.html#notch';
+  }
+  /* Reset = reload the framed app. The demo keeps its state in page
+   * memory only, so a reload restores the sample line exactly. */
+  document.getElementById('btn-reset-page').addEventListener('click', function () {
+    frame.src = frame.src;
+  });
+})();
+</script>
+</body>
+</html>
