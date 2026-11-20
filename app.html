@@ -273,7 +273,8 @@
   <!-- Q180 (2026-10-08): Tanner — Reports gets its own tab. Backup and CSV
        exports move out of Settings; they're reporting, not settings. -->
   <div id="pane-reports" class="pane">
-    <div class="pane-head"><h2>Data</h2><p>Back up your data and download reports.</p></div>
+    <!-- DEMO-CLONE FENCING (fencing pass, 2026-11-19): Data subtitle rewritten demo-true; the Data controls explain instead of acting (see js/demo-fence.js). -->
+    <div class="pane-head"><h2>Data</h2><p>In the full app, these move your records in and out. In the demo, tap one and it explains itself.</p></div>
     <div class="scroll">
       <!-- gz (2026-11-18): the Data pane's three cards are collapsible
            setsec sections now — the same bar standard as every other
@@ -335,7 +336,8 @@
   </div>
 
   <div id="pane-settings" class="pane">
-    <div class="pane-head"><h2>Settings</h2><p>Opossum Foot beta.</p></div>
+    <!-- DEMO-CLONE FENCING (fencing pass, 2026-11-19): Settings subtitle de-beta'd; see README fencing item 8. -->
+    <div class="pane-head"><h2>Settings</h2><p>Opossum Foot.</p></div>
     <div class="scroll">
       <!-- Q90 (2026-10-01): Tanner — Trapping State + Home Ground live in one
            "Where You Trap" card, broad to precise. -->
@@ -348,7 +350,7 @@
              the Seasons tab rules card in states that require trap tags. -->
         <label class="field" for="settings-traptag" style="margin-top:12px">My trap tag</label>
         <input type="text" id="settings-traptag" placeholder="Name &amp; address, or state ID number" autocomplete="off">
-        <p class="dim" style="margin-top:8px">What your trap tags say — many states require your name and address, or a state-issued ID number, on every trap. Kept on this phone only; it shows on the Seasons tab with your state's tag rule.</p>
+        <p class="dim" style="margin-top:8px">What your trap tags say — many states require your name and address, or a state-issued ID number, on every trap. In the full app it's kept on this phone only; it shows on the Seasons tab with your state's tag rule. In the demo it lasts only while you're here.</p>
         <p class="dim" id="settings-home-status" style="margin:12px 0 8px">Not set — the map opens on your trapping state.</p>
         <button class="btn-secondary" id="btn-change-home" type="button">Change home location</button>
       </div>
@@ -395,9 +397,9 @@
           <p class="dim" style="margin-top:8px">Sets past this long without any activity turn red on the map. Any edit, catch, or check-in restarts the clock. The quick &ldquo;Checked &mdash; nothing changed&rdquo; button only restarts the clock &mdash; it saves nothing to History. Turn alerts off to hide the red pins and countdowns.</p>
         </div>
         <label class="checkline"><input type="checkbox" id="settings-voice"> Voice entry &amp; memos</label>
-        <p class="dim" style="margin:-6px 0 12px">Adds the dictation and voice-memo buttons on set and catch notes. Transcription uses your phone's speech recognition and needs a connection; the recordings themselves stay on this phone.</p>
+        <p class="dim" style="margin:-6px 0 12px">Adds the dictation and voice-memo buttons on set and catch notes. Transcription uses your phone's speech recognition and needs a connection; in the full app the recordings themselves stay on this phone. The demo doesn't record.</p>
         <label class="checkline"><input type="checkbox" id="settings-weather"> Weather (map chip + auto-record)</label>
-        <p class="dim" style="margin:-6px 0 10px">Shows current conditions and the next 12 hours on the map chip, and attaches the weather to new sets and catches on its own. Sends your coordinates to Open-Meteo for the forecast — needs a connection.</p>
+        <p class="dim" style="margin:-6px 0 10px">Shows current conditions and the next 12 hours on the map chip, and attaches the weather to new sets and catches on its own. In the full app the forecast comes from Open-Meteo using your location; in this demo your coordinates never leave your browser, and the weather shown is sample weather.</p>
         <label class="checkline"><input type="checkbox" id="settings-windarrows"> Wind arrows on set pins</label>
         <p class="dim" style="margin:-6px 0 10px">A small arrow at the edge of each set pin points downwind — the way your scent carries. Arrows show when you're zoomed in close, and use live wind when you're online.</p>
         <button class="btn-secondary" id="btn-features-reset" type="button">Reset features to defaults</button>
@@ -447,8 +449,9 @@
         <button type="button" class="setsec-head" id="setsec-privacy-head" data-sec="setsec-privacy" aria-expanded="false"><span>Your Privacy</span><span class="setsec-chev" aria-hidden="true">›</span></button>
         <div class="setsec-body" id="setsec-privacy-body" hidden>
         <p><strong>Your spots never leave your phone.</strong></p>
-        <p class="dim">Opossum Foot has no account, no login, and no cloud. Every set, catch, photo, and voice memo is stored only in this phone's browser storage. Nothing you enter is stored anywhere else — the only network traffic is map tiles, the app's own files, weather lookups (only if you turn weather on), and live voice transcription (only when you tap the microphone and have a connection).</p>
-        <p class="dim"><strong>The honest catch:</strong> because there's no cloud backup, a lost phone, a wiped phone, or clearing this browser's data can destroy your records. Export a CSV backup regularly — that's your safety net.</p>
+        <!-- DEMO-CLONE FENCING (fencing pass, 2026-11-19): privacy copy rewritten demo-true — the full app stores only on the phone; the demo stores nothing. -->
+        <p class="dim">Opossum Foot has no account, no login, and no cloud. In the full app, every set, catch, photo, and voice memo is stored only on your phone. This demo stores nothing at all — the sample line lives only while you're here and resets when you leave. The only network traffic is map tiles and the app's own files.</p>
+        <p class="dim"><strong>The honest catch:</strong> because there's no cloud backup, in the full app a lost phone, a wiped phone, or clearing the browser's data can destroy your records — backing up from the Data tab is the safety net, and the buttons there explain how it works. In this demo there are no records to lose: leave, and the sample line resets.</p>
         <label class="checkline"><input type="checkbox" id="settings-showcoords"> Show GPS coordinates</label>
         <p class="dim" style="margin:-6px 0 10px">Shows the county and exact coordinates on a set's details and on the weather tab. Off keeps them hidden, so screenshots are safe to share.</p>
         <label class="checkline"><input type="checkbox" id="settings-exportcoords"> Include GPS coordinates in reports</label>
@@ -458,11 +461,10 @@
       <div class="card setsec" id="setsec-about">
         <button type="button" class="setsec-head" id="setsec-about-head" data-sec="setsec-about" aria-expanded="false"><span>About</span><span class="setsec-chev" aria-hidden="true">›</span></button>
         <div class="setsec-body" id="setsec-about-body" hidden>
-        <div class="rowline"><img src="assets/icon-mark.png" class="about-logo" alt="Opossum Foot logo"><div><strong>Opossum Foot</strong><br><span class="dim">Beta · a pocket trapping notebook</span></div></div>
+        <!-- DEMO-CLONE FENCING (fencing pass, 2026-11-19): About de-beta'd; the Build and Viewport diagnostic lines are removed in the demo (app.js guards both stamps, so nothing breaks). -->
+        <div class="rowline"><img src="assets/icon-mark.png" class="about-logo" alt="Opossum Foot logo"><div><strong>Opossum Foot</strong><br><span class="dim">A pocket trapping notebook</span></div></div>
         <p class="dim">Logo &amp; brand artwork by Lydia Reichenbacher · Tight Chains Co.</p>
         <p class="dim">No accounts. No cloud. No analytics. Sponsors keep Opossum Foot free — no popups, no tracking, no nonsense.<br>Season reminders are reminders only — always verify with your state agency and local ordinances.</p>
-        <p class="dim">Build <span id="build-stamp">—</span></p>
-        <p class="dim">Viewport <span id="viewport-stamp">—</span></p>
         </div>
       </div>
       <div class="card setsec" id="setsec-help">

@@ -14,14 +14,18 @@ the fencing list below, it is a bug, not a design choice.
 
 - `index.html` — the landing page (v1's pitch structure and copy,
   lightly adapted — see "Forced copy adaptations"). Frames the app.
-- `app.html` — the app's `index.html`, with two edits: the manifest
-  link removed, and `js/demo-fence.js` loaded first.
+- `app.html` — the app's `index.html`, with the manifest link removed,
+  `js/demo-fence.js` loaded first, and the copy edits of fencing
+  item 8 (each commented `DEMO-CLONE FENCING` in place).
 - `js/demo-fence.js` — the fence. Seed, memory-only storage, in-memory
-  IndexedDB, privacy fetch stubs, banner seeding, notch frame-fit.
+  IndexedDB, privacy fetch stubs, banner seeding, notch frame-fit,
+  stay-but-explain interception.
+- `js/guide-content.js` — the app's generated guide/legal strings with
+  the fencing item 8 content edits (commented at the top of the file).
 - `js/app.js` — the app's code with the fenced edits below; every edit
   is commented `DEMO-CLONE FENCING` (9 markers; `grep` finds them all).
-- Everything else (`css/`, `js/*`, `vendor/`, `assets/`) is byte-identical
-  to production build hj. There is deliberately **no `sw.js`, no
+- Everything else (`css/`, the rest of `js/*`, `vendor/`, `assets/`)
+  is byte-identical to production build hj. There is deliberately **no `sw.js`, no
   `manifest.json`, and no `data/`** in this package.
 
 ## The fencing (the ONLY deliberate departures from the app)
@@ -87,6 +91,50 @@ the fencing list below, it is a bug, not a design choice.
    is always grabbable and the pitch, About card, Reset, and footer
    are reachable by ordinary scrolling.
 
+8. **Fencing pass (2026-11-19, Tanner's rulings).** Three kinds:
+   - **Beta/internal language cut.** Settings subtitle "Opossum Foot
+     beta." → "Opossum Foot."; About reads "A pocket trapping
+     notebook" and loses its Build stamp and Viewport diagnostic
+     lines; the Legal notices lose the whole "Closed beta — keep it
+     in the circle" section, the no-warranties backup pointer, and
+     the beta fine-print (the fine print now closes plainly: demo,
+     sample data, nothing saved or sent; ownership and "Seasons are
+     reminders, not law" stand verbatim); the Trapper's guide loses
+     the "Putting it on your phone" and "The beta deal" chapters,
+     its "tell Tanner — that's what the beta is for" bullet is
+     rewritten for the public ("…reach us through opossumfoot.com"),
+     the sponsor-bio sentence no longer promises "a link to their
+     site" (item 4 strips those links), and its Settings contents
+     now point at the Data tab for backups and reports. Result: no
+     visitor-visible "beta" anywhere in the demo.
+   - **Stay-but-explain.** The Data tab's nine move-data controls
+     (Back up all data (JSON), Export photos & files (ZIP), Share
+     this line, Import data (JSON), Import pins from Google Maps,
+     Paste a Maps link, Export catches/sets/mileage (CSV)), the
+     gallery's Share photo pack, every photo viewer's Save Photo,
+     Settings' Erase and Purge buttons, and the four voice controls
+     (two dictation, two Record memo) stay visible and dressed as
+     the app's — but the fence intercepts the tap in the capture
+     phase and shows an explanation on the app's own toast (what the
+     full app does; the demo does none of it). The function never
+     runs: no download, no share sheet, no link fetch, no file
+     dialog (the hidden import inputs are intercepted too), no
+     deletion, no microphone. Erase's storage-level reseed (item 2)
+     is therefore unreachable from its button and remains only as a
+     safety net. The Data pane subtitle now reads: *"In the full
+     app, these move your records in and out. In the demo, tap one
+     and it explains itself."*
+   - **Demo-true copy.** The Privacy card no longer claims storage
+     in "this phone's browser storage" or a CSV safety net: the
+     full app stores only on the phone, the demo stores nothing and
+     resets on leave, and Data-tab backups are the full app's safety
+     net. The Weather toggle no longer says coordinates are sent to
+     Open-Meteo — in the demo they never leave the browser and the
+     weather is sample weather. The Voice toggle and the My trap
+     tag caption now say plainly that the demo doesn't record /
+     keeps nothing past the visit. (Paperwork's Route and Mileage
+     pointer to "Export mileage (CSV)" is unchanged — it points at
+     a control that now explains itself.)
 ## Forced copy adaptations (landing page)
 
 V1's copy is kept verbatim except where the clone makes it false:
@@ -141,11 +189,17 @@ the original hi run).
 
 Re-base mechanics, for the next one: the clone's `js/app.js` diffs
 against production hj in **exactly 9 hunks — the 9 fencing edits**;
-`app.html` diffs against production `index.html` in exactly the 2
-documented edits; every other shared file is byte-identical. hj
-forced **no functional fencing adaptation** — the fence script is
-unchanged but for its header build stamp, and the cap still guards
-the same five set-creation paths (recounted under hj).
+`app.html` diffs against production `index.html` in the manifest /
+fence-script edits plus the item 8 copy edits; `js/guide-content.js`
+diffs in the item 8 content edits; every other shared file is
+byte-identical. hj forced **no functional fencing adaptation** —
+the fence script is unchanged but for its header build stamp, and
+the cap still guards the same five set-creation paths (recounted
+under hj). The fencing pass (item 8) added the stay-but-explain
+interception to the fence script and the copy edits above; on the
+next re-base, those app.html / guide-content.js edits must be
+re-applied to the new base's copies (the interception itself is
+base-independent — it keys on element ids).
 
 **Not deployed.** This package waits for Tanner's review; the parent
 agent shows him first. Lefty is not contacted from here.
